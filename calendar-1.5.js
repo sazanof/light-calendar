@@ -649,8 +649,8 @@
 		refresh: function () {
 			var self = this;
 			self.container.innerHTML = '';
-			var y = self.opts.year, m = self.opts.month;
-			for (var i = -1; i < (self.opts.months -1); i++) {
+			var y = self.opts.year,m = self.opts.month;
+			for (var i = 0; i < self.opts.months; i++) {
 				self.draw(y, m + i, getIndex(i, self.opts.months));
 			}
 			return self;
