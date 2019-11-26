@@ -33,6 +33,7 @@
 		this.opts = {
 			year: new Date().getFullYear(),
 			month: new Date().getMonth(),
+			offset: null,
 			wkLabel: "wk",
 			dayNames: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
 			dayNamesFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
@@ -130,9 +131,9 @@
 			} else if (e.srcElement) {
 				targ = e.srcElement;
 			}
-			if (targ.nodeType == 3) {
+			if (targ.nodeType === 3) {
 				targ = targ.parentNode;
-			}	
+			}
 			return targ;
 		}
 	};
@@ -164,7 +165,7 @@
 	}
 	/**
 	 * Determines which navigation buttons to draw based on number of months to show and number of month to draw.
-	 * 
+	 *
 	 * @param {number} i
 	 * @param {number} months
 	 * @return {number}
@@ -182,19 +183,19 @@
 	}
 	/**
 	 * Format date
-	 * 
+	 *
 	 * @param {string} format
 	 * @param {number} date
 	 * @return {string}
 	 */
 	function _formatDate(format, date) {
-		
+
 		function pad(input) {
 			return (input + "").length === 2 ? input : "0" + input;
 		}
-		
-		var i, len, f, 
-			output = [], 
+
+		var i, len, f,
+			output = [],
 			dt = new Date(date);
 		for (i = 0, len = format.length; i < len; i++) {
 			f = format.charAt(i);
@@ -235,12 +236,12 @@
 		}
 		return output.join("");
 	}
-	
+
 	function is(type, obj) {
 		var clas = Object.prototype.toString.call(obj).slice(8, -1);
 	    return obj !== undefined && obj !== null && clas === type;
 	}
-	
+
 	Calendar.prototype = {
 		/**
 		 * Returns instance of calendar
@@ -257,9 +258,9 @@
 				return;
 			}
 			if (self.opts.selectedDate) {
-			    self.selectedDate = self.opts.selectedDate; 
+			    self.selectedDate = self.opts.selectedDate;
 			}
-			else if (self.element.nodeType === 1 && self.element.nodeName == "INPUT" && self.element.value.length > 0) {
+			else if (self.element.nodeType === 1 && self.element.nodeName === "INPUT" && self.element.value.length > 0) {
 				var now = new Date(self.element.value);
 				self.selectedDate = new Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
 				self.opts.year = self.selectedDate.getFullYear();
@@ -271,18 +272,14 @@
 			if (!self.opts.inline) {
 				div.style.display = 'none';
 				div.style.position = 'absolute';
-				Calendar.Util.addEvent(self.element, 'focus', function (e) {
+				Calendar.Util.addEvent(self.element, 'click', function (e) {
 					if (self.isOpen) {
 						self.close();
 					} else {
 						self.open();
 					}
 				});
-				Calendar.Util.addEvent(self.element, 'blur', function (e) {
-					if (self.isOpen && !self.focus) {
-						self.close();
-					}
-				});
+
 				Calendar.Util.addEvent(self.element, 'keydown', function (e) {
 					var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
 					switch (key) {
@@ -296,23 +293,21 @@
 				});
 				Calendar.Util.addEvent(document, "mousedown", function (e) {
 					var target = Calendar.Util.getEventTarget(e);
-					if (Calendar.Util.hasClass(target, "bcal-container") || 
-						Calendar.Util.hasClass(target, "bcal-table") || 
-						Calendar.Util.hasClass(target, "bcal-date") || 
-						Calendar.Util.hasClass(target, "bcal-today") || 
-						Calendar.Util.hasClass(target, "bcal-empty") || 
-						Calendar.Util.hasClass(target, "bcal-selected") || 
+					if (Calendar.Util.hasClass(target, "bcal-container") ||
+						Calendar.Util.hasClass(target, "bcal-table") ||
+						Calendar.Util.hasClass(target, "bcal-date") ||
+						Calendar.Util.hasClass(target, "bcal-today") ||
+						Calendar.Util.hasClass(target, "bcal-empty") ||
+						Calendar.Util.hasClass(target, "bcal-selected") ||
 						Calendar.Util.hasClass(target, "bcal-week") ||
 						Calendar.Util.hasClass(target, "bcal-nav") ||
-						Calendar.Util.hasClass(target, "bcal-navi") || 
-						Calendar.Util.hasClass(target, "bcal-month") || 
-						Calendar.Util.hasClass(target, "bcal-wday") || 
+						Calendar.Util.hasClass(target, "bcal-navi") ||
+						Calendar.Util.hasClass(target, "bcal-month") ||
+						Calendar.Util.hasClass(target, "bcal-wday") ||
 						Calendar.Util.hasClass(target, "bcal-wnum") ||
 						Calendar.Util.hasClass(target.parentNode, "bcal-container") ||
 						Calendar.Util.hasClass(target.parentNode, "bcal-table")) {
-						
-					} else {
-						self.close();
+
 					}
 				});
 				body.appendChild(div);
@@ -322,7 +317,7 @@
 			self.container = div;
 			var y = self.opts.year, m = self.opts.month;
 			for (i = 0; i < self.opts.months; i++) {
-				self.draw(y, m + i, getIndex(i, self.opts.months));
+				self.draw(y, (m + i + self.opts.offset), getIndex(i, self.opts.months));
 			}
 			return self;
 		},
@@ -334,7 +329,7 @@
 		formatDate: function () {
 			return _formatDate.apply(this, arguments);
 		},
-		
+
 		/**
 		 * Shall the previous button be rendered or not
 		 * @return {boolean}
@@ -346,9 +341,9 @@
             if (this.opts.navigationOnAll) {
                 return true;
             };
-            return (index === 1 || index === 3);		    
+            return (index === 1 || index === 3);
 		},
-		
+
         /**
          * Shall the next button be rendered or not
          * @return {boolean}
@@ -360,9 +355,9 @@
             if (this.opts.navigationOnAll) {
                 return true;
             };
-            return (index === 2 || index === 3);            
+            return (index === 2 || index === 3);
         },
-		
+
 		/**
 		 * @param {number} year
 		 * @param {number} month
@@ -370,6 +365,7 @@
 		 * @param {number=} id (optional)
 		 */
 		draw: function (year, month, index, id) {
+			console.log('draw');
 			var self = this,
 				autoId = typeof id === 'undefined' ? Math.floor(Math.random() * 9999999) : id,
 				firstOfMonth = new Date(year, month, 1),
@@ -384,11 +380,10 @@
 				row, cell, text, jsdate, current, oBsd,
 				s_arr, si, slen,
 				minDate = false;
-			
 			if (self.opts.minDate !== null) {
 				minDate = true;
 			}
-			
+
 			row = d.createElement('tr');
 			// Prev month link
 			cell = d.createElement('th');
@@ -412,14 +407,14 @@
 				Calendar.Util.addClass(cell, "bcal-navi");
 			}
 			row.appendChild(cell);
-			
+
 			// Month name, Year
 			cell = d.createElement('th');
 			cell.colSpan = (cols === 7) ? 5 : 6;
 			Calendar.Util.addClass(cell, "bcal-month");
 			cell.appendChild(d.createTextNode(self.opts.monthNamesFull[firstOfMonth.getMonth()] + ' ' + firstOfMonth.getFullYear()));
 			row.appendChild(cell);
-			
+
 			// Next month link
 			cell = d.createElement('th');
 			if (self.showNext(index)) {
@@ -443,7 +438,7 @@
 			}
 			row.appendChild(cell);
 			thead.appendChild(row);
-			
+
 			row = d.createElement('tr');
 			if (self.opts.weekNumbers) {
 				cell = d.createElement('th');
@@ -451,7 +446,7 @@
 				Calendar.Util.addClass(cell, "bcal-wnum");
 				row.appendChild(cell);
 			}
-					
+
 			for (i = 0; i < 7; i++) {
 				cell = d.createElement('th');
 				text = d.createTextNode(self.opts.dayNames[(self.opts.startDay + i) % 7]);
@@ -461,7 +456,7 @@
 			}
 			thead.appendChild(row);
 			table.appendChild(thead);
-			
+
 			day = self.opts.startDay + 1 - first;
 			while (day > 1) {
 	    	    day -= 7;
@@ -482,7 +477,7 @@
 	    	    	if (day > 0 && day <= daysInMonth) {
 	    	    		current = new Date(year, month, day);
 	    	    		cell.setAttribute('bcal-date', current.getTime());
-	    	    		Calendar.Util.addClass(cell, 'bcal-date');	    	    		
+	    	    		Calendar.Util.addClass(cell, 'bcal-date');
 	    	    		if (today === [current.getFullYear(), current.getMonth(), current.getDate()].join('-')) {
 	    	    			Calendar.Util.addClass(cell, 'bcal-today');
 	    	    		}
@@ -498,17 +493,17 @@
 	    	    		} else {
 	    	    			self.bind.call(self, cell);
 						}
-	    	    		
+
 	    	    	} else {
 	    	    		if (self.opts.showOtherMonths) {
 	    	    			var _day = day > 0 ? day - daysInMonth: daysInPrevMonth + day,
 	    	    				_month = day > 0 ? month + 1 : month - 1;
 	    	    			text = d.createTextNode(_day);
 	    	    			cell.appendChild(text);
-	    	    			
+
 	    	    			current = new Date(year, _month, _day);
 		    	    		cell.setAttribute('bcal-date', current.getTime());
-	    	    			
+
 	    	    			if (self.opts.selectOtherMonths) {
 	    	    				self.bind.call(self, cell);
 	    	    			}
@@ -535,15 +530,15 @@
 	    		tbody.appendChild(emptyRow(self.opts.weekNumbers));
 	    		tbody.appendChild(emptyRow(self.opts.weekNumbers));
 	    	}
-			
+
 			Calendar.Util.addClass(table, 'bcal-table');
 			table.setAttribute('id', ['bcal-table', autoId].join('-'));
 			table.appendChild(tbody);
-			
+
 			Calendar.Util.addEvent(table, 'click', function (e) {
 				self.focus = true;
 			});
-			
+
 			var tbl = d.getElementById(['bcal-table', autoId].join('-'));
 			if (tbl) {
 				self.container.removeChild(tbl);
@@ -562,13 +557,14 @@
     				Calendar.Util.addClass(cell, 'bcal-selected');
     				var ts = parseInt(cell.getAttribute('bcal-date'), 10);
     				self.selectedDate = new Date(ts);
-    				self.opts.year = self.selectedDate.getFullYear();
-    				self.opts.month = self.selectedDate.getMonth();
+    				//self.opts.year = self.selectedDate.getFullYear();
+    				//self.opts.month = self.selectedDate.getMonth();
 	    			if (self.opts.element && !self.opts.inline) {
     	    			self.close();
     	    			self.element.value = self.formatDate(self.opts.dateFormat, ts);
 	    			}
 	    			self.opts.onSelect.apply(self, [self.element, self.formatDate(self.opts.dateFormat, ts), ts, cell]);
+
 	    			self.refresh.call(self);
     			};
     		})(self, cell));
@@ -594,7 +590,7 @@
 					self.container.style.top = (pos[1] - self.container.offsetHeight) + 'px';
 					break;
 			}
-			self.container.style.left = pos[0] + 'px';			
+			self.container.style.left = pos[0] + 'px';
 			self.container.style.display = '';
 			self.opts.onOpen.apply(self, [self.element]);
 			self.isOpen = true;
@@ -648,15 +644,16 @@
 		},
 		refresh: function () {
 			var self = this;
+			var y = self.opts.year;
+			var m = self.opts.month;
 			self.container.innerHTML = '';
-			var y = self.opts.year,m = self.opts.month;
 			for (var i = 0; i < self.opts.months; i++) {
-				self.draw(y, m + i, getIndex(i, self.opts.months));
+				self.draw(y, (m + i + self.opts.offset), getIndex(i, self.opts.months));
 			}
 			return self;
 		}
 	};
-	
+
 	/**
 	 * Returns the week number for this date.  startDay is the day of week the week
 	 * starts on for your locale - it can be from 0 to 6. If startDay is 1 (Monday),
@@ -666,32 +663,32 @@
 	 */
 	Date.prototype.getWeek = function (startDay) {
 	    // Adapted code from: https://gist.github.com/dblock/1081513
-	    
+
 	    startDay = typeof(startDay) == 'number' ? startDay : 1; //default startDay to 1 (Moday)
-        
-	    // Create a copy of this date object  
-	    var target  = new Date(this.valueOf());  
-	    
-	    // Correct the day number with startDay 
-	    var dayNr   = (this.getDay() + (7 - startDay)) % 7;  
 
-	    // Set the target to the thursday of this week so the  
-	    // target date is in the right year  
-	    target.setDate(target.getDate() - dayNr + 3);  
+	    // Create a copy of this date object
+	    var target  = new Date(this.valueOf());
 
-	    // ISO 8601 states that week 1 is the week  
-	    // with january 4th in it  
-	    var jan4    = new Date(target.getFullYear(), 0, 4);  
+	    // Correct the day number with startDay
+	    var dayNr   = (this.getDay() + (7 - startDay)) % 7;
 
-	    // Number of days between target date and january 4th  
-	    var dayDiff = (target - jan4) / 86400000;    
+	    // Set the target to the thursday of this week so the
+	    // target date is in the right year
+	    target.setDate(target.getDate() - dayNr + 3);
 
-	    // Calculate week number: Week 1 (january 4th) plus the    
-	    // number of weeks between target date and january 4th    
-	    var weekNr = 1 + Math.ceil(dayDiff / 7);    
+	    // ISO 8601 states that week 1 is the week
+	    // with january 4th in it
+	    var jan4    = new Date(target.getFullYear(), 0, 4);
+
+	    // Number of days between target date and january 4th
+	    var dayDiff = (target - jan4) / 86400000;
+
+	    // Calculate week number: Week 1 (january 4th) plus the
+	    // number of weeks between target date and january 4th
+	    var weekNr = 1 + Math.ceil(dayDiff / 7);
 
 	    return weekNr;
-	};	
-	
+	};
+
 	return (window["Calendar"] = Calendar);
 })(window);
