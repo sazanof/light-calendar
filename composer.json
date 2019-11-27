@@ -1,0 +1,13 @@
+{
+    "name": "sazanof/calendarjs",
+    "description": "Lightweight calendar in pure Javascript",
+    "type": "library",
+    "license": "MIT GPL3",
+    "authors": [
+        {
+            "name": "Михаил",
+            "email": "sazanof.ru@yandex.ru"
+        }
+    ],
+    "require": {}
+}
