@@ -8,6 +8,7 @@
  * 2015, Matej Kenda: added options wkLabel and selectedDate
  * 
  * Date: Thu Jul 26 23:15:56 2012 +0300
+ * Modify by Sazanof sazanof.ru@yandex.ru 2019
  */
 
 "use strict";
@@ -23,7 +24,6 @@
 	 * @template Calendar
 	 */
 	function Calendar(options) {
-		this.version = "1.5";
 		this.isOpen = false;
 		this.focus = false;
 		this.id = null;
@@ -337,10 +337,10 @@
 		showPrev: function(index) {
 		    if (!this.opts.showNavigation) {
 		        return false;
-		    };
+		    }
             if (this.opts.navigationOnAll) {
                 return true;
-            };
+            }
             return (index === 1 || index === 3);
 		},
 
@@ -351,10 +351,10 @@
         showNext: function(index) {
             if (!this.opts.showNavigation) {
                 return false;
-            };
+            }
             if (this.opts.navigationOnAll) {
                 return true;
-            };
+            }
             return (index === 2 || index === 3);
         },
 
