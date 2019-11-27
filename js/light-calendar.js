@@ -16,15 +16,22 @@
 		this.container = null;
 		this.element = null;
 		this.selectedDate = null;
+
 		this.opts = {
+			lang : {
+				dayNames: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+				dayNamesFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+				monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				monthNamesFull: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+			},
 			year: new Date().getFullYear(),
 			month: new Date().getMonth(),
 			offset: null,
 			wkLabel: "wk",
-			dayNames: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
-			dayNamesFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-			monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-			monthNamesFull: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+			day_Names: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+			day_NamesFull: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+			month_Names: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+			month_NamesFull: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 			startDay: 0,
 			weekNumbers: false,
 			selectedDate: null,
@@ -36,7 +43,7 @@
             navigationOnAll: false,
 			months: 1,
 			inline: false,
-			disablePast: false,
+			disablePast: true,
 			dateFormat: 'Y-m-d',
 			position: 'bottom',
 			minDate: null,
@@ -199,10 +206,10 @@
 				output.push(dt.getMonth() + 1);
 				break;
 			case 'F':
-				output.push(this.opts.monthNamesFull[dt.getMonth()]);
+				output.push(this.opts.lang.monthNamesFull[dt.getMonth()]);
 				break;
 			case 'M':
-				output.push(this.opts.monthNames[dt.getMonth()]);
+				output.push(this.opts.lang.monthNames[dt.getMonth()]);
 				break;
 			case 'd':
 				output.push(pad(dt.getDate()));
@@ -211,10 +218,10 @@
 				output.push(dt.getDate());
 				break;
 			case 'D':
-				output.push(this.opts.dayNamesFull[dt.getDay()].slice(0, 3));
+				output.push(this.opts.lang.lang.dayNamesFull[dt.getDay()].slice(0, 3));
 				break;
 			case 'l':
-				output.push(this.opts.dayNamesFull[dt.getDay()]);
+				output.push(this.opts.lang.lang.dayNamesFull[dt.getDay()]);
 				break;
 			default:
 				output.push(f);
@@ -387,6 +394,7 @@
 				});
 				cell.style.cursor = 'pointer';
 				Calendar.Util.addClass(cell, "bcal-nav");
+				Calendar.Util.addClass(cell, "bcal-prev");
 				text = d.createTextNode('<');
 				cell.appendChild(text);
 			} else {
@@ -398,7 +406,7 @@
 			cell = d.createElement('th');
 			cell.colSpan = (cols === 7) ? 5 : 6;
 			Calendar.Util.addClass(cell, "bcal-month");
-			cell.appendChild(d.createTextNode(self.opts.monthNamesFull[firstOfMonth.getMonth()] + ' ' + firstOfMonth.getFullYear()));
+			cell.appendChild(d.createTextNode(self.opts.lang.monthNamesFull[firstOfMonth.getMonth()] + ' ' + firstOfMonth.getFullYear()));
 			row.appendChild(cell);
 
 			// Next month link
@@ -406,6 +414,7 @@
 			if (self.showNext(index)) {
 				cell.style.cursor = 'pointer';
 				Calendar.Util.addClass(cell, "bcal-nav");
+				Calendar.Util.addClass(cell, "bcal-next");
 				text = d.createTextNode('>');
 				Calendar.Util.addEvent(cell, 'click', function (e) {
 					self.container.innerHTML = '';
@@ -435,7 +444,7 @@
 
 			for (i = 0; i < 7; i++) {
 				cell = d.createElement('th');
-				text = d.createTextNode(self.opts.dayNames[(self.opts.startDay + i) % 7]);
+				text = d.createTextNode(self.opts.lang.dayNames[(self.opts.startDay + i) % 7]);
 				Calendar.Util.addClass(cell, "bcal-wday");
 				cell.appendChild(text);
 				row.appendChild(cell);
@@ -497,6 +506,7 @@
 	    	    		Calendar.Util.addClass(cell, 'bcal-empty');
 	    	    	}
 	    	    	if (self.selectedDate !== null) {
+	    	    		//@TODO fix current value
 	    	    	    var sd = self.selectedDate;
 	    	    	    if (sd.getFullYear() === current.getFullYear() &&
 	    	    	        sd.getMonth() === current.getMonth() &&
