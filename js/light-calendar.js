@@ -478,7 +478,7 @@
 	    	    		}
 	    	    		text = d.createTextNode(day);
 	    	    		cell.appendChild(text);
-	    	    		oBsd = self.opts.onBeforeShowDay.apply(self, [current]);
+						oBsd = self.opts.onBeforeShowDay.apply(self, [current, cell]);
 	    	    		if (self.opts.disablePast === true && current < midnight) {
 	    	    			Calendar.Util.addClass(cell, 'bcal-past');
 	    	    		} else if (minDate && current < self.opts.minDate) {

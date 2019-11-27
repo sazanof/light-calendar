@@ -33,6 +33,10 @@
         dateFormat: 'd.m.Y',
         onSelect: function (element, selectedDate, date, cell) {
             document.getElementById('date_test').innerHTML = selectedDate;
+        },
+        onBeforeShowDay: function (date, cell) {
+            //console.log(date,cell);
+            return true
         }
     });
     var cal_2 = new Calendar({
