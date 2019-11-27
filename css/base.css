@@ -1,0 +1,100 @@
+.bcal-container {
+    display:inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.bcal-table {
+    width:16rem;
+    margin:1rem;
+    padding:0.6rem;
+    border:0.06rem solid #ccc;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed
+}
+.bcal-table,
+.bcal-table th,
+.bcal-table td {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.bcal-table thead th{
+    font-weight: bold;
+    height: 20px;
+    text-align: center;
+}
+.bcal-table tbody td{
+    cursor: pointer;
+    font-weight: normal;
+    text-align: center;
+    width: 2rem;
+    height: 2rem;
+    box-sizing: border-box;
+    border:0.06rem solid #ddd
+}
+
+.bcal-table tbody tr td{
+    border-right:none;
+    border-bottom: none;
+}
+.bcal-table tbody tr:last-child td{
+    border-right:0.06rem solid #ddd;
+    border-bottom:0.06rem solid #ddd;
+}
+
+.bcal-table tbody tr td:last-child{
+    border-right:0.06rem solid #ddd;
+}
+
+.bcal-table tbody tr:last-child td{
+    border-right:none;
+}
+
+.bcal-table tbody tr:last-child td:last-child{
+    border-right:0.06rem solid #ddd;
+}
+
+.bcal-table .bcal-wday,
+.bcal-table .bcal-wnum{
+    padding: 1px 1px 2px 2px;
+}
+
+.bcal-table .bcal-empty{
+    cursor: not-allowed;
+    background: #efefef;
+    color:#ccc
+}
+
+.bcal-table .bcal-empty.bcal-selected {
+    opacity: 0.3;
+}
+
+.bcal-table .bcal-past{
+    cursor: not-allowed;
+    color:#ccc;
+}
+.bcal-table .bcal-today{
+    background: #323232;
+    color:#fff;
+    border-color:#323232
+}
+.bcal-table .bcal-week{
+    cursor: default;
+}
+.bcal-table .bcal-selected{
+    background: #666;
+    color:#fff;
+    border-color:#666
+}
+.bcal-table .bcal-month,
+.bcal-table .bcal-navi,
+.bcal-table .bcal-wnum,
+.bcal-table .bcal-wday,
+.bcal-table .bcal-week{
+    padding: 0.4rem;
+    cursor: text;
+}
+
+.bcal-nav {background: #efefef}

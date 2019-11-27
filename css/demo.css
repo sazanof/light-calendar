@@ -1,0 +1,11 @@
+html,body {
+    font-family: "Arial",sans-serif;
+    font-size: 0.9rem;
+}
+#date_test {
+    box-sizing:border-box;
+    padding: 1rem;
+    margin: 1rem;
+    border:0.05rem solid #ddd;
+    display:block
+}
