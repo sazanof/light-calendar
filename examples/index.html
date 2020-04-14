@@ -15,7 +15,7 @@
 <span id="date_test">Выберите дату</span>
 
 <h1>Datepicker</h1>
-<input type="text" name="calendar_2" id="calendar_2"/>
+<input type="text" name="calendar_2" id="calendar_2"/><input type="text" name="calendar_3" id="calendar_3"/>
 
 <script type="text/javascript" src="../js/light-calendar.js"></script>
 <script type="text/javascript">
@@ -43,6 +43,17 @@
         element: 'calendar_2',
         weekNumbers: true,
         startDay: 1,
+        minDate: new Date(new Date().getTime() - 60 * 60 * 24 * 1000),
+        outsideClose: true,
+        onOpen: function (element) {
+            //do something
+        }
+    });
+    var cal_3 = new Calendar({
+        element: 'calendar_3',
+        weekNumbers: true,
+        startDay: 1,
+        outsideClose: true,
         minDate: new Date(new Date().getTime() - 60 * 60 * 24 * 1000),
         onOpen: function (element) {
             //do something

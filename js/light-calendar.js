@@ -1,5 +1,20 @@
 "use strict";
 (function (window, undefined) {
+
+	if (!Element.prototype.closest) {
+
+		// реализуем
+		Element.prototype.closest = function (css) {
+			var node = this;
+
+			while (node) {
+				if (node.matches(css)) return node;
+				else node = node.parentElement;
+			}
+			return null;
+		};
+	}
+
 	var now = new Date(),
 		today = [now.getFullYear(), now.getMonth(), now.getDate()].join('-'),
 		midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()),
@@ -24,6 +39,7 @@
 				monthNames: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
 				monthNamesFull: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 			},
+			outsideClose: false,
 			year: new Date().getFullYear(),
 			month: new Date().getMonth(),
 			offset: null,
@@ -284,6 +300,15 @@
 							break;
 					}
 				});
+				//outsideClose
+				if (self.opts.outsideClose) {
+					Calendar.Util.addEvent(document, 'click', function (e) {
+						if (!e.target.closest(".bcal-container") && self.isOpen && e.target !== self.element) {
+							self.close();
+						}
+					});
+				}
+
 				Calendar.Util.addEvent(document, "mousedown", function (e) {
 					var target = Calendar.Util.getEventTarget(e);
 					if (Calendar.Util.hasClass(target, "bcal-container") ||
