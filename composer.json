@@ -2,7 +2,7 @@
     "name": "sazanof/light-calendar",
     "description": "Lightweight calendar in pure Javascript",
     "type": "library",
-    "license": "MIT GPL3",
+  "license": "GPL-3.0-or-later",
     "authors": [
         {
           "name": "Sazanof",
