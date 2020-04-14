@@ -14,6 +14,7 @@ Option                | Type       | Default
 **monthNames**        | *Array*    | ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 **monthNamesFull**    | *Array*    | ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 **offset**            | *Number*   | null
+**outsideClose**            | *Boolean*   | false
 **startDay**          | *Number*   | 0
 **weekNumbers**       | *Boolean*  | false
 **selectOtherMonths** | *Boolean*  | false
