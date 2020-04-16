@@ -303,7 +303,7 @@
 				//outsideClose
 				if (self.opts.outsideClose) {
 					Calendar.Util.addEvent(document, 'click', function (e) {
-						if (!e.target.closest(".bcal-container") && self.isOpen && e.target !== self.element) {
+                        if ((e.target.closest(".bcal-table") === null && self.isOpen) && (e.target !== self.element)) {
 							self.close();
 						}
 					});
